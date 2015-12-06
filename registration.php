@@ -8,7 +8,6 @@ let's require the connection to happen:
 */
 require("config.inc.php");
 require("reports.php");
-$token = rand()%10000;
 
 //if posted data is not empty
 if (!empty($_POST)) {
@@ -74,6 +73,19 @@ if (!empty($_POST)) {
         die(json_encode($response));
     }
     
+    // token generation part starts
+    $file = 'file.txt'; // your file name
+    // error handling etc to make sure file exists & readable
+
+    $fdata = file_get_contents ( $file ); // read file data
+    // parse $fdata if needed and extract number
+    $fdata = intval($fdata) + 1;
+
+    file_put_contents($file, $fdata); // write it back to file
+
+    $token = $fdata;
+
+
     //If we have made it here without dying, then we are in the clear to 
     //create a new user.  Let's setup our new query to create a user.  
     //Again, to protect against sql injects, user tokens such as :user and :pass
